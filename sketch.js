@@ -1,9 +1,11 @@
 
+
 var monkey , monkey_running
 var banana ,bananaImage, obstacle, obstacleImage, ground
 var ground2
 var FoodGroup, obstacleGroup
 var score
+var backgroundImage, backdrop
 
 function preload(){
   
@@ -11,9 +13,10 @@ function preload(){
   monkey_running =            loadAnimation("sprite_0.png","sprite_1.png","sprite_2.png","sprite_3.png","sprite_4.png","sprite_5.png","sprite_6.png","sprite_7.png","sprite_8.png")
   
   bananaImage = loadImage("banana.png");
-  obstaceImage = loadImage("obstacle.png");
+  obstacleImage = loadImage("obstacle.png");
   
- 
+ backgroundImage = loadImage("jungle.jpg");
+  
 }
 
 
@@ -21,47 +24,59 @@ function preload(){
 function setup() {
   createCanvas(400, 400);
 
-  ground = createSprite(400, 350, 900, 10);
+  ground = createSprite(400, 400, 900, 10);
   ground.velocityX = -4;
-  //ground.x = ground.width/2;
-  console.log(ground.x);
+  ground.x = ground.width/2;
+  ground.visible = false;
+  //console.log(ground.x);
   
-monkey=createSprite(70, 300, 20, 20);
-monkey.addAnimation("moving",monkey_running);
-monkey.scale = 0.1;
+  backdrop = createSprite(200, 200, 200, 200);
+  backdrop.addImage(backgroundImage);
+  backdrop.velocityX = -4;
   
-  
-  ground2 = createSprite(400, 360, 900, 10);
-  ground2.visible = false;
-  
-  FoodGroup = createGroup();
-  obstacleGroup = createGroup();
+  monkey=createSprite(70, 360, 20, 20);
+  monkey.addAnimation("moving",monkey_running);
+  monkey.scale = 0.1;
   
   score = 0;
+  score2 = 0;
+  
+  ground2 = createSprite(400, 390, 900, 10);
+  ground2.visible = false;
+  
+  FoodGroup =  new Group();
+  obstacleGroup = new Group();
+  
 }
 
 
 function draw() {
-background(400);  
+  background(180);
   
-      if (ground.x < 0){
-      ground.x = ground.width/2;
-    }
-  
+  if (backdrop.x < 0){
+     backdrop.x = backdrop.width/2;
+   }
+
   if(keyDown("space") && monkey.y >=250) {
     monkey.velocityY = -15;
   }
   monkey.velocityY = monkey.velocityY + 1;
-
-  console.log(monkey.y);
+  
   monkey.collide(ground2);
   
-  text("score:"+score, 350, 20);
-  score = sccore+Math.round(getFrameRate()/50);
-  
-  food();
-  
   drawSprites();
+  food();
+  spawnObstacles();
+  
+  text("score:"+score, 340, 20);
+  
+  if(FoodGroup.isTouching(monkey)){
+   score = score+1;
+  FoodGroup.destroyEach();
+  }
+  switch(score){
+      
+  }
 }
 
 function food() {
@@ -78,16 +93,17 @@ function food() {
   }
 }
 
-function obstacel() {
-   if(frameCount%300 === 0) {
-  var obstacle = createSprite(200, 350, 20, 20);
-  obstacle.x = Math.round(random(120, 300));
+function spawnObstacles() {
+   if(frameCount%100 === 0) {
+  var obstacle = createSprite(400, 370, 20, 20);
+  obstacle.x = Math.round(random(200,300));
     obstacle.addImage(obstacleImage);
-    onstacle.scale = 0.5;
+    obstacle.scale = 0.1;
     obstacle.velocityX = -4;
     
-    banana.setLifeTime = 300;
+    obstacle.setLifeTime = 400
 
     obstacleGroup.add(obstacle);
 }
 }
+
