@@ -1,5 +1,4 @@
 
-
 var monkey , monkey_running
 var banana ,bananaImage, obstacle, obstacleImage, ground
 var ground2
@@ -32,7 +31,7 @@ function setup() {
   
   backdrop = createSprite(200, 200, 200, 200);
   backdrop.addImage(backgroundImage);
-  backdrop.velocityX = -4;
+  //backdrop.velocityX = -4;
   
   monkey=createSprite(70, 360, 20, 20);
   monkey.addAnimation("moving",monkey_running);
@@ -74,9 +73,23 @@ function draw() {
    score = score+1;
   FoodGroup.destroyEach();
   }
-  switch(score){
-      
+  
+  if( obstacleGroup.isTouching(monkey)){
+   score = 0;
+  text("Game Over", 200, 200);
   }
+  
+  switch(score){
+    case 10: player.scale = 0.12;
+      break;
+    case 20 : player.scale = 0.14;
+      break;
+    case 30: player.scale = 0.16;
+      break;
+    case 40: player.scale = 0.18;
+      break;
+      default: break;
+}
 }
 
 function food() {
@@ -104,6 +117,5 @@ function spawnObstacles() {
     obstacle.setLifeTime = 400
 
     obstacleGroup.add(obstacle);
+   }
 }
-}
-
