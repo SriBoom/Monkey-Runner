@@ -31,7 +31,7 @@ function setup() {
   
   backdrop = createSprite(200, 200, 200, 200);
   backdrop.addImage(backgroundImage);
-  //backdrop.velocityX = -4;
+  backdrop.velocityX = -4;
   
   monkey=createSprite(70, 360, 20, 20);
   monkey.addAnimation("moving",monkey_running);
@@ -62,6 +62,7 @@ function draw() {
   monkey.velocityY = monkey.velocityY + 1;
   
   monkey.collide(ground2);
+  camera.position.x=monkey.velocityX;
   
   drawSprites();
   food();
@@ -76,7 +77,7 @@ function draw() {
   
   if( obstacleGroup.isTouching(monkey)){
    score = 0;
-  text("Game Over", 200, 200);
+   text("Game Over", 200, 200);
   }
   
   switch(score){
